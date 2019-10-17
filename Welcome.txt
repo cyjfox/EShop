@@ -1,1 +1,2 @@
 Welcome to EShop!
+This project would be developed using Spring + Struts2 + Hibernate!
