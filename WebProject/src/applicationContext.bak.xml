@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context ="http://www.springframework.org/schema/context" 
+    xmlns:aop="http://www.springframework.org/schema/aop" 
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-2.5.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd" >
+
+
+
+    <!-- 建立数据源 -->
+    <bean id="dataSource"
+            class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <!-- 数据库驱动，我这里使用的是Mysql数据库 -->            
+            <property name="driverClassName"
+                value="com.mysql.jdbc.Driver">
+            </property>
+            <property name="url">
+                <value>
+                    <!-- 数据库名称,注意编码 -->
+                    jdbc:mysql://localhost:3306/test0920?useUnicode=true&amp;characterEncoding=utf8
+                </value>
+            </property>
+            <!-- 数据库登录用户名&密码 -->
+            <property name="username" value="root"></property>
+            <property name="password" value=""></property>
+            
+    </bean>
+    
+    <!-- 把数据源注入给Session工厂 -->    
+    <bean id="sessionFactory"
+        class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource" />
+        </property>
+        
+        <!-- 把Session工厂注入给hibernateTemplate -->
+        <!-- hibernateTemplate提供很多方便的方法，执行时自动建立 HibernateCallback 对象，如：load()、save等。 -->        
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">
+                    org.hibernate.dialect.MySQLDialect
+                </prop>
+                <prop key="hibernate.show_sql">false</prop>
+            </props>
+        </property>
+        
+        <!-- 配置映射文件 -->        
+        <property name="mappingResources">
+            <list>
+                <!-- *.hbm.xml 在这里配置 -->
+                <value>com/blank/pojo/User.hbm.xml</value>                
+            </list>
+        </property>
+    </bean>
+    
+    
+    <!-- 声明式事务管理  -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+     
+    <!-- 配置事务规则 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRED" />
+            <tx:method name="add*" propagation="REQUIRED" />
+            <tx:method name="update*" propagation="REQUIRED" />
+            <tx:method name="del*" propagation="REQUIRED" />
+            <tx:method name="find*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="*" propagation="SUPPORTS"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <!-- 事务要处理的类的路径 -->
+        <aop:pointcut id="interceptorPointCuts"
+            expression="execution(* com.blank.service.*.*(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="interceptorPointCuts" />
+    </aop:config>
+     
+    <!-- DAO -->
+    <!-- class记得要写正确 -->
+    <bean id="IBaseDAO" class="com.blank.dao.impl.IBaseDAO" scope="singleton">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="UserDAO" class="com.blank.dao.impl.UserDAOImpl"
+        parent="IBaseDAO">
+    </bean>
+    
+    <!-- Service -->    
+    <bean id="UserServiceImpl" class="com.blank.service.impl.UserServiceImpl">
+        <property name="userDAO">
+            <ref bean="UserDAO" />
+        </property>
+    </bean>
+    
+    <!-- Action -->
+    <!-- struts使用这里的id做为class -->
+    <bean id="UserAction" class="com.blank.action.UserAction" scope="prototype">
+        <property name="userService">
+            <ref bean="UserServiceImpl"/>
+        </property>
+    </bean>
+    
+</beans>
