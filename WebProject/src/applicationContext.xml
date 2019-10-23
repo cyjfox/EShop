@@ -16,7 +16,7 @@
  
     <!-- Action -->
     <!-- struts使用这里的id做为class -->
-    <bean id="UserAction" class="pri.cyjfox.action.TestAction" scope="prototype">
+    <bean id="userAction" class="pri.cyjfox.action.TestAction1" scope="prototype">
     </bean>
     
 </beans>
