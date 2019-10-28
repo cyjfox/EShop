@@ -32,14 +32,20 @@
              class: 对应的类的路径
              method: 调用Action中的方法名
         -->
+          
         <action name="test" class="pri.cyjfox.action.TestAction" method="Test">
-            
+        
             <!-- 节点配置
                 name : result名称 和Action中返回的值相同
                 type : result类型 不写则选用superpackage的type struts-default.xml中的默认为dispatcher
              -->
          	<result name="success" type="dispatcher">/test.jsp</result>
       
+        </action>
+        
+        <action name="addUser" class="userAction" method="addUser">
+        	<result name="success" type="dispatcher">/user_info.jsp</result>
+        	<result name="error" type="dispatcher">/error.jsp</result>
         </action>
     </package>
 </struts>
