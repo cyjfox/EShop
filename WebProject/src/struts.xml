@@ -24,7 +24,7 @@
         
         <!-- 全局results配置 -->
         <global-results>
-            <result name="input">/error.jsp</result>
+            <result name="error">/error.jsp</result>
         </global-results>
         
         <!-- Action配置 一个Action可以被多次映射(只要action配置中的name不同)
@@ -46,6 +46,11 @@
         <action name="addUser" class="userAction" method="addUser">
         	<result name="success" type="dispatcher">/user_info.jsp</result>
         	<result name="error" type="dispatcher">/error.jsp</result>
+        </action>
+        
+        <action name="testUserLogin" class="loginService" method="testUserLogin">
+        	<result name="success">/user_info.jsp</result>
+        	<result name="user_not_exist">/user_not_exist.html</result>
         </action>
     </package>
 </struts>

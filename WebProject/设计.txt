@@ -1,0 +1,1 @@
+user_info表是用户表，id是主键，自增，user_name是用户名,全站唯一，user_email是电子邮件也是全局唯一，user_password储存md5加密过的密码

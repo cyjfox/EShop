@@ -24,14 +24,15 @@ public class UserInfo {
 	@Column(name="user_email")
 	private String userEmail;
 	
-	
+	@Column(name="user_password")
+	private String userPassword;
 	
 	public UserInfo() {
 	}
 	
 	@Override
 	public String toString() {
-		return "UserInfo [userId=" + userId + ", userName=" + userName + ", userEmail=" + userEmail + "]";
+		return "UserInfo [userId=" + userId + ", userName=" + userName + ", userEmail=" + userEmail + ", userPassword=" + userPassword + "]";
 	}
 	public Integer getUserId() {
 		return userId;
@@ -51,5 +52,11 @@ public class UserInfo {
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
 	}
-	
+	public String getUserPassword() {
+		return this.userPassword;
+	}
+	public void setUserPassword(String userPassword)
+	{
+		this.userPassword = userPassword;
+	}
 }

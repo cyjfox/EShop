@@ -104,5 +104,6 @@
 	<classpathentry kind="lib" path="lib/spring-core-5.2.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/spring-expression-5.2.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/spring-web-5.2.0.RELEASE.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
